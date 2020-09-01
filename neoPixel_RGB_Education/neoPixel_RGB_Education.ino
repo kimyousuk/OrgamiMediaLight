@@ -1,28 +1,31 @@
 #include <Adafruit_NeoPixel.h>
-#define LED_PIN    9
-#define LED_COUNT 24
+#define LED_PIN    9          //아두이노에 연결된 네오픽셀 신호선의 디지털핀 번호
+#define LED_COUNT 24          //구매한 네오픽셀의 LED 갯수
 Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, NEO_GRB + NEO_KHZ800);
 void setup() {
   // put your setup code here, to run once:
-  strip.begin();            // INITIALIZE NeoPixel strip object (REQUIRED)
-  strip.show();             // Turn OFF all pixels ASAP
-  strip.setBrightness(255); // Set BRIGHTNESS to about 1/5 (max = 255)
+  strip.begin();            // 네오픽셀 초기화
+  strip.show();             // 처음에 검정(꺼짐)으로 설정
+  strip.setBrightness(255); // 전체LED의 밝기 최대값은 255
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  // 각 예제 부분의 주석을 풀고 실해 보아요.
+  //  1번 예제
   //  strip.setPixelColor(0, strip.Color(255,   0,   0));
   //  strip.setPixelColor(1, strip.Color(  0, 255,   0));
   //  strip.setPixelColor(2, strip.Color(  0,   0, 255));
   //  strip.show();
 
+  //2번 예제
 //    for (int i = 0; i < strip.numPixels(); i += 3) {
 //      strip.setPixelColor(i, strip.Color(255,   0,   0));
 //      strip.setPixelColor(i + 1, strip.Color(  0, 255,   0));
 //      strip.setPixelColor(i + 2, strip.Color(  0,   0, 255));
 //    }
 //    strip.show();
-//
+
+  // 3번 예제
 //  for (int i = 0; i < strip.numPixels(); i += 1) {
 //    strip.setPixelColor(i, strip.Color(255,   0,   0));
 //    strip.setPixelColor(i + 1, strip.Color(255,   0,   0));
@@ -35,26 +38,4 @@ void loop() {
 //  }
  
   rainbow(20);
-}
-void rainbow(int wait) {
-  // Hue of first pixel runs 5 complete loops through the color wheel.
-  // Color wheel has a range of 65536 but it's OK if we roll over, so
-  // just count from 0 to 5*65536. Adding 256 to firstPixelHue each time
-  // means we'll make 5*65536/256 = 1280 passes through this outer loop:
-  for (long firstPixelHue = 0; firstPixelHue < 5 * 65536; firstPixelHue += 256) {
-    for (int i = 0; i < strip.numPixels(); i++) { // For each pixel in strip...
-      // Offset pixel hue by an amount to make one full revolution of the
-      // color wheel (range of 65536) along the length of the strip
-      // (strip.numPixels() steps):
-      int pixelHue = firstPixelHue + (i * 65536 / strip.numPixels());
-      // strip.ColorHSV() can take 1 or 3 arguments: a hue (0 to 65535) or
-      // optionally add saturation and value (brightness) (each 0 to 255).
-      // Here we're using just the single-argument hue variant. The result
-      // is passed through strip.gamma32() to provide 'truer' colors
-      // before assigning to each pixel:
-      strip.setPixelColor(i, strip.gamma32(strip.ColorHSV(pixelHue)));
-    }
-    strip.show(); // Update strip with new contents
-    delay(wait);  // Pause for a moment
-  }
 }
